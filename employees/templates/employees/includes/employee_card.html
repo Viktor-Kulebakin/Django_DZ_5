@@ -1,0 +1,28 @@
+<a href="{% url 'employees:detail' employee.pk %}" class="card">
+    <div class="image-wrapper">
+        {% with first_img=employee.images.all.first %}
+            {% if first_img %}
+                <img src="{{ first_img.image.url }}" alt="{{ employee.first_name }}" class="card-image">
+            {% else %}
+                <div class="no-image">Фото отсутствует</div>
+            {% endif %}
+        {% endwith %}
+    </div>
+    <div class="card-content">
+        <h3>{{ employee.last_name }} {{ employee.first_name }}</h3>
+        
+        <!-- Вывод стажа работы в днях -->
+        <div class="experience-block" style="margin-bottom: 12px; font-size: 0.9em; color: #718096;">
+            📅 Стаж работы: <strong>{{ employee.experience_days }} дней</strong>
+        </div>
+
+        <div class="skills-label">Ключевые навыки</div>
+        <div class="skills-container">
+            {% for skill in employee.skills.all %}
+                <span class="badge">{{ skill.name }}</span>
+            {% empty %}
+                <span class="no-skills">Не указаны</span>
+            {% endfor %}
+        </div>
+    </div>
+</a>

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block extra_css %}
+.section-title { font-size: 1.7em; margin-bottom: 30px; position: relative; padding-bottom: 10px; color: #1a202c; }
+.section-title::after { content: ''; position: absolute; left: 0; bottom: 0; width: 50px; height: 4px; background-color: #6b46c1; border-radius: 2px; }
+
+/* Стили для блока пагинации */
+.pagination { display: flex; justify-content: center; gap: 10px; margin-top: 40px; list-style: none; padding: 0; }
+.pagination a, .pagination .current-page { padding: 8px 16px; border: 1px solid #e2e8f0; border-radius: 6px; text-decoration: none; color: #4a5568; }
+.pagination a:hover { background-color: #6b46c1; color: white; border-color: #6b46c1; }
+.pagination .current-page { background-color: #4c3191; color: white; border-color: #4c3191; font-weight: bold; }
+{% endblock %}
+
+{% block content %}
+<h2 class="section-title">Полный список сотрудников</h2>
+
+<div class="grid">
+    <!-- Итерируем page_obj вместо employees для корректной работы пагинации по 10 элементов -->
+    {% for employee in page_obj %}
+        {% include "employees/includes/employee_card.html" %}
+    {% empty %}
+        <p>В базе данных пока нет зарегистрированных сотрудников.</p>
+    {% endfor %}
+</div>
+
+<!-- Блок пагинации -->
+{% if page_obj.has_other_pages %}
+<ul class="pagination">
+    {% if page_obj.has_previous %}
+        <li><a href="?page=1">&laquo; Первая</a></li>
+        <li><a href="?page={{ page_obj.previous_page_number }}">Назад</a></li>
+    {% endif %}
+
+    <li><span class="current-page">Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span></li>
+
+    {% if page_obj.has_next %}
+        <li><a href="?page={{ page_obj.next_page_number }}">Вперед</a></li>
+        <li><a href="?page={{ page_obj.paginator.num_pages }}">Последняя &raquo;</a></li>
+    {% endif %}
+</ul>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block extra_css %}
+.hero-section { background: linear-gradient(135deg, #6b46c1 0%, #4c3191 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 40px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+.hero-section h1 { margin-top: 0; font-size: 2.2em; }
+.hero-section p { font-size: 1.1em; opacity: 0.9; line-height: 1.6; max-width: 800px; }
+.section-title { font-size: 1.7em; margin-bottom: 20px; position: relative; padding-bottom: 10px; }
+.section-title::after { content: ''; position: absolute; left: 0; bottom: 0; width: 50px; height: 4px; background-color: #6b46c1; border-radius: 2px; }
+
+/* Стили для счетчика сотрудников */
+.stats-badge { background-color: #f7fafc; border: 1px solid #e2e8f0; padding: 12px 20px; border-radius: 8px; font-size: 1.1em; margin-bottom: 25px; display: inline-block; color: #4a5568; }
+.stats-badge strong { color: #6b46c1; font-size: 1.2em; }
+{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <h1>О проекте</h1>
+    <p>Добро пожаловать в корпоративный портал нашей компании. Здесь собран полный каталог специалистов, детально описаны ключевые навыки каждого сотрудника, а также представлены их актуальные рабочие портфолио в галереях.</p>
+</div>
+
+<h2 class="section-title">Наша команда</h2>
+
+<!-- 1. Вывод общего количества сотрудников в базе данных -->
+<div class="stats-badge">
+    👥 Всего сотрудников в базе данных: <strong>{{ total_employees }}</strong>
+</div>
+
+<!-- 2. Сетка карточек (теперь здесь будут только 4 последних сотрудника) -->
+<div class="grid">
+    {% for employee in employees %}
+        {% include "employees/includes/employee_card.html" %}
+    {% empty %}
+        <p>В базе данных пока нет зарегистрированных сотрудников.</p>
+    {% endfor %}
+</div>
+{% endblock %}
